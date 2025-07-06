@@ -46,11 +46,23 @@ namespace ASP_API.Controllers
         // [Route("{id}")]
         public ActionResult<VideoGame> GetVideoGameById(int id)
         {
-            var game = videoGames.FirstOrDefault(x => x.Id == id);
+            var game = videoGames.FirstOrDefault(g => g.Id == id);
             if (game is null)
                 return NotFound();
 
             return Ok(game);
+        }
+
+        [HttpPost]
+        public ActionResult<VideoGame> AddVideoGame(VideoGame newGame)
+        {
+            if (newGame is null)
+                return BadRequest();
+
+            newGame.Id = videoGames.Max(g => g.Id) + 1;
+            videoGames.Add(newGame);
+
+            return CreatedAtAction(nameof(GetVideoGameById), new { id = newGame.Id }, newGame);
         }
     }
 }
