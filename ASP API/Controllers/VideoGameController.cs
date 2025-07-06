@@ -41,5 +41,16 @@ namespace ASP_API.Controllers
         {
             return Ok(videoGames);
         }
+
+        [HttpGet("{id}")]
+        // [Route("{id}")]
+        public ActionResult<VideoGame> GetVideoGameById(int id)
+        {
+            var game = videoGames.FirstOrDefault(x => x.Id == id);
+            if (game is null)
+                return NotFound();
+
+            return Ok(game);
+        }
     }
 }
